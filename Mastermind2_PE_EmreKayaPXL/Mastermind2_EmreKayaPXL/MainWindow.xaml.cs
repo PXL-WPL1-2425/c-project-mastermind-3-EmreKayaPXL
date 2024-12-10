@@ -33,7 +33,7 @@ namespace Mastermind2_EmreKayaPXL
         string randomColors;
         private string[] highscore = new string[15];
         string antwoord;
-        private static List<string> namen = new List <string>();
+          private static List<string> namen = new List <string>();
         private static int naamIndex = 0;
         StringBuilder randomColorBuilder;
         string label1Color;
