@@ -33,7 +33,8 @@ namespace Mastermind2_EmreKayaPXL
         string randomColors;
         private string[] highscore = new string[15];
         string antwoord;
-        List<string> namen = new List <string>();
+        private static List<string> namen = new List <string>();
+        private static int naamIndex = 0;
         StringBuilder randomColorBuilder;
         string label1Color;
         string label2Color;
@@ -52,8 +53,14 @@ namespace Mastermind2_EmreKayaPXL
             timer.Tick += Timer_Tick;
         }
 
+        private void DeVolgendeNaam()
+        {
+            naamIndex++;
+        }
+
         private void StartGame()
         {
+
             do
             {
                 antwoord = Interaction.InputBox("Geef je naam in", "Invoer", "Naam");
@@ -65,14 +72,13 @@ namespace Mastermind2_EmreKayaPXL
                    
                 }
                 namen.Add(antwoord);
-
-            }while (MessageBox.Show("Wil je naam toevoegen", "nieuwe naam", MessageBoxButton.YesNo) == MessageBoxResult.Yes);
+            } while (MessageBox.Show("Wil je nog een naam toevoegen?", "nieuwe naam", MessageBoxButton.YesNo) == MessageBoxResult.Yes);
 
         }
 
         private void HighScore()
         {
-            highscore[0] = ($"{namen[0]} - {attempts}pogingen - {score}/100");
+            highscore[0] = ($"{namen[naamIndex]} - {attempts}pogingen - {score}/100");
         }
 
         private void Afsluiten_Click(object sender, RoutedEventArgs e)
@@ -121,11 +127,12 @@ namespace Mastermind2_EmreKayaPXL
                     }
                 }
             }
-            if (attempts > maxAttempts)
+            if (attempts > maxAttempts || score<=0)
             {
                         ToggleDebug();
                         StopCountdown();
-                        messageBoxResult = MessageBox.Show($"U heeft verloren!\nScore: {score}/100\nAjjjantal pogingen: {attempts -1}");
+                        messageBoxResult = MessageBox.Show($"U heeft verloren! \n{randomColorsTextBox.Text} \nScore: {score}/100\nAantal pogingen: {attempts} \nNu is speler {namen[naamIndex + 1]} aan de beurt ", namen[naamIndex]);
+                        DeVolgendeNaam();
                         sliderInformationLabel.Visibility = Visibility.Visible;
                         maxPogingSlider.Visibility = Visibility.Visible;
                         score = 100;
@@ -215,7 +222,8 @@ namespace Mastermind2_EmreKayaPXL
                 attempts--;
                 UpdateTitle();
                 ToggleDebug();
-                messageBoxResult = MessageBox.Show($"U heeft gewonnen!\nScore: {score}/100\nAantal pogingen {attempts}");
+                messageBoxResult = MessageBox.Show($"U heeft gewonnen!\nScore: {score}/100\nAantal pogingen {attempts} \nNu is speler {namen[naamIndex + 1]} aan de beurt", namen[naamIndex]);
+                DeVolgendeNaam(); 
                 sliderInformationLabel.Visibility = Visibility.Visible;
                 maxPogingSlider.Visibility = Visibility.Visible;
                 score = 100;
@@ -244,11 +252,11 @@ namespace Mastermind2_EmreKayaPXL
             else if (elapsedTime.Seconds >= 4)
             {
                 timerLabel.Background = Brushes.DarkGreen;
+                sliderInformationLabel.Visibility = Visibility.Collapsed;
+                maxPogingSlider.Visibility = Visibility.Collapsed;
             }
             else if (elapsedTime.Seconds >= 2)
             {
-                sliderInformationLabel.Visibility = Visibility.Collapsed;
-                maxPogingSlider.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -509,6 +517,26 @@ namespace Mastermind2_EmreKayaPXL
                 clicked = DateTime.Now;
                 timer.Start();
             }
+        }
+
+        private void Pogingen_Click(object sender, RoutedEventArgs e)
+        {
+            StopCountdown();
+            MessageBox.Show($"Totaal aantal pogingen die je kan doen is: {maxAttempts}\nDit kan je kiezen door de balk links onder te slepen");
+            clicked = DateTime.Now;
+            timer.Start();
+        }
+
+        private void NieuweSpel_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateTitle();
+            sliderInformationLabel.Visibility = Visibility.Visible;
+            maxPogingSlider.Visibility = Visibility.Visible;
+            score = 100;
+            AllesRessetten();
+            UpdateTitle();
+            randomColorBuilder.Clear();
+            titleRandomColors();
         }
     }
 }

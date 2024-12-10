@@ -35,12 +35,12 @@
             <Menu Background="LightSteelBlue" Height="30" VerticalAlignment="Top">
                 <MenuItem Height="30" FontSize="15" Header="Spelregels" HorizontalContentAlignment="Center" Click="MenuItem_Click" Margin="0"/>
                 <MenuItem Header="Bestand" Height="30" FontSize="15" Margin="0">
-                    <MenuItem Header="Nieuwe spel" ></MenuItem>
+                    <MenuItem Header="Nieuwe spel" Click="NieuweSpel_Click" ></MenuItem>
                     <MenuItem Header="Highscores" Click="Highscores_Click"></MenuItem>
                     <MenuItem Header="Afsluiten" Click="Afsluiten_Click"></MenuItem>
                 </MenuItem>
                 <MenuItem Header="Instellingen" Height="30" FontSize="15"  Margin="0">
-                    <MenuItem Header="Aantal pogingen"></MenuItem>
+                    <MenuItem Header="Aantal pogingen" Click="Pogingen_Click" ></MenuItem>
                 </MenuItem>
             </Menu>
 
@@ -189,7 +189,7 @@
 
 
         <TextBlock Text="" Name="resultTextBlock" Height="25" FontSize="15" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.Row="4" Grid.Column="3" Background="Transparent" Grid.ColumnSpan="3"></TextBlock>
-        <Slider Name="maxPogingSlider" Grid.Row="4" Grid.ColumnSpan="3" Height="20" Width="300" Margin="0" VerticalAlignment="Top" Visibility="Visible" HorizontalAlignment="Left" Minimum="3" AutoToolTipPlacement="TopLeft" TickPlacement="TopLeft" Maximum="20" Background="Black" ValueChanged="Slider_ValueChanged" IsSnapToTickEnabled="True"></Slider>
+        <Slider Name="maxPogingSlider" Grid.Row="4" Grid.ColumnSpan="3" Height="20" Width="300" Margin="0" VerticalAlignment="Top" Visibility="Visible" HorizontalAlignment="Left" Minimum="3" AutoToolTipPlacement="TopLeft" TickPlacement="TopLeft" Maximum="20" Background="Red" ValueChanged="Slider_ValueChanged" IsSnapToTickEnabled="True"></Slider>
         <Label Name="sliderInformationLabel"  Grid.Row="4" FontSize="15" Grid.ColumnSpan="3" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Background="White" Height="28" Foreground="Red" Content="Sleep om te beginnen !!!" Visibility="Visible" HorizontalContentAlignment="Center"></Label>
         <TextBox  Grid.ColumnSpan="3" Grid.Row="4" Name="randomColorsTextBox" Visibility="Collapsed" Background="LightGray" Text="" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
         <Button x:Name="CheckButton" Grid.Row="4" Grid.Column="7" Content="Check code" Background="Gray" 
