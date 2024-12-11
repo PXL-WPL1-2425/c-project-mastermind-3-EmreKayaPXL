@@ -23,7 +23,7 @@ namespace Mastermind2_EmreKayaPXL
         DateTime clicked;
         TimeSpan elapsedTime;
         int attempts = 1;
-        int score = 100;
+        private int score = 100;
         int correctTotalColor1 = 0;
         int correctTotalColor2 = 0;
         int correctTotalColor3 = 0;
@@ -33,7 +33,7 @@ namespace Mastermind2_EmreKayaPXL
         string randomColors;
         private string[] highscore = new string[15];
         string antwoord;
-          private static List<string> namen = new List <string>();
+        private static List<string> namen = new List<string>();
         private static int naamIndex = 0;
         StringBuilder randomColorBuilder;
         string label1Color;
@@ -42,6 +42,8 @@ namespace Mastermind2_EmreKayaPXL
         string label4Color;
         private bool isInDebug = false;
         int maxAttempts;
+        private static List<string> juisteKleuren = new List<string>{"", "", "", ""};
+        string[] titleColors = new string[4];
 
         public MainWindow()
         {
@@ -63,16 +65,18 @@ namespace Mastermind2_EmreKayaPXL
 
             do
             {
-                antwoord = Interaction.InputBox("Geef je naam in", "Invoer", "Naam");
+                antwoord = Interaction.InputBox("Geef je naam in", "Naam", "Naam");
 
                 while (string.IsNullOrEmpty(antwoord))
                 {
                     MessageBox.Show("Geef een naam!", "Foutieve invoer");
-                    antwoord = Interaction.InputBox("Geef je naam in", "Invoer", "Naam");
+                    antwoord = Interaction.InputBox("Geef je naam in", "Naam", "Naam");
                    
                 }
                 namen.Add(antwoord);
-            } while (MessageBox.Show("Wil je nog een naam toevoegen?", "nieuwe naam", MessageBoxButton.YesNo) == MessageBoxResult.Yes);
+            } while (MessageBox.Show("Wil je nog een naam toevoegen?", "Nieuwe naam", MessageBoxButton.YesNo) == MessageBoxResult.Yes);
+            naamLabel.Content = "Naam speler:   " + namen[naamIndex];
+
 
         }
 
@@ -275,13 +279,17 @@ namespace Mastermind2_EmreKayaPXL
 
                 int randomIndex = random.Next(0, colors.Length);
                 randomColorBuilder.Append(colors[randomIndex]);
+                juisteKleuren[i] = colors[randomIndex];
                 if (i < 3)
                 {
                     randomColorBuilder.Append(", ");
+                    
                 }
+
             }
             randomColors = randomColorBuilder.ToString();
             randomColorsTextBox.Text = randomColors;
+            titleColors = randomColorsTextBox.Text.Split(':')[1].Split(',');
         }
 
         private void UpdateTitle()
@@ -448,7 +456,7 @@ namespace Mastermind2_EmreKayaPXL
                     resultTextBlock.Text = "Niet de juiste kleuren gebruikt";
                     break;
             }
-            scoreTextBlock.Text = $" Score = {score}/100";
+            scoreTextBlock.Text = $" Score = {score}/100";            
             HistoryColorsAttempts();
         }
 
@@ -537,6 +545,67 @@ namespace Mastermind2_EmreKayaPXL
             UpdateTitle();
             randomColorBuilder.Clear();
             titleRandomColors();
+        }
+
+
+        private void JuisteKleurEnPlaats1Hint_Click(object sender, RoutedEventArgs e)
+        {
+            if (score > 25)
+            {
+            score -= 25;
+            scoreTextBlock.Text = $" Score = {score}/100";
+            label1.BorderBrush = Brushes.DarkRed;
+            MessageBox.Show($"Eerste kleur is {titleColors[0]}");
+            }
+            else MessageBox.Show("Je hebt geen score meer.");
+            scoreTextBlock.Text = $" Score = {score}/100";
+        }
+        private void JuisteKleurEnPlaats2Hint_Click(object sender, RoutedEventArgs e)
+        {
+            if (score > 25)
+            {
+            score -= 25;
+            scoreTextBlock.Text = $" Score = {score}/100";
+            label2.BorderBrush = Brushes.DarkRed;
+            MessageBox.Show($"Tweede kleur is {titleColors[1]}");
+            }
+            else MessageBox.Show("Je hebt geen score meer.");
+            scoreTextBlock.Text = $" Score = {score}/100";
+        }
+        private void JuisteKleurEnPlaats3Hint_Click(object sender, RoutedEventArgs e)
+        {
+            if (score > 25)
+            {
+            score -= 25;
+            scoreTextBlock.Text = $" Score = {score}/100";
+            label3.BorderBrush = Brushes.DarkRed;
+            MessageBox.Show($"Derde kleur is {titleColors[2]}");
+            }
+            else MessageBox.Show("Je hebt geen score meer.");
+        }
+        private void JuisteKleurEnPlaats4Hint_Click(object sender, RoutedEventArgs e)
+        {
+            if (score > 25)
+            {
+                score -= 25;
+                scoreTextBlock.Text = $" Score = {score}/100";
+                label4.BorderBrush = Brushes.DarkRed;
+                MessageBox.Show($"Vierde kleur is {titleColors[3]}");
+            }
+            else MessageBox.Show("Je hebt geen score meer.");
+        }
+        private void AlleenJuisteKleur_Click(object sender, RoutedEventArgs e)
+        {
+            if (score > 15)
+            {
+            score -= 15;
+            scoreTextBlock.Text = $" Score = {score}/100";
+            Random random = new Random();
+            int randomindex = random.Next(0, 4);
+            string eenVanDeJuisteKleuren = juisteKleuren[randomindex];
+            MessageBox.Show($"{eenVanDeJuisteKleuren},deze kleur komt voor");
+            }
+            else MessageBox.Show("Je hebt geen score meer.");
         }
     }
 }
