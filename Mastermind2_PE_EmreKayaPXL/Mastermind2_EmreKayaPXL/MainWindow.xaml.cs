@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Xml.Xsl;
 
 namespace Mastermind2_EmreKayaPXL
 {
@@ -53,6 +54,7 @@ namespace Mastermind2_EmreKayaPXL
             UpdateTitle();
             timer.Interval = TimeSpan.FromMilliseconds(1);
             timer.Tick += Timer_Tick;
+
         }
 
         private void DeVolgendeNaam()
@@ -363,11 +365,13 @@ namespace Mastermind2_EmreKayaPXL
                 if (titleColors[0].Contains(label1Color))
                 {
                     label1.BorderBrush = Brushes.DarkRed;
+                    uitleg1.Content = "Juiste kleur, juiste positie";
                     correctTotalColor1 = 1;
                 }
                 else
                 {
                     label1.BorderBrush = Brushes.Wheat;
+                    uitleg1.Content = "Juiste kleur, foute positie";
                     score -= 1;
                     correctTotalColor1 = 0;
                 }
@@ -376,6 +380,7 @@ namespace Mastermind2_EmreKayaPXL
             {
                 score -= 2;
                 correctTotalColor1 = 0;
+                uitleg1.Content = "foute kleur";
             }
             if (randomColorsTextBox.Text.Contains(label2Color))
             {
@@ -383,17 +388,20 @@ namespace Mastermind2_EmreKayaPXL
                 if (titleColors[1].Contains(label2Color))
                 {
                     label2.BorderBrush = Brushes.DarkRed;
+                    uitleg2.Content = "Juiste kleur, juiste positie";
                     correctTotalColor2 = 1;
                 }
                 else
                 {
                     label2.BorderBrush = Brushes.Wheat;
+                    uitleg2.Content = "Juiste kleur, foute positie";
                     score -= 1;
                     correctTotalColor2 = 0;
                 }
             }
             else
             {
+                uitleg2.Content = "foute kleur";
                 score -= 2;
                 correctTotalColor2 = 0;
             }
@@ -403,17 +411,20 @@ namespace Mastermind2_EmreKayaPXL
                 if (titleColors[2].Contains(label3Color))
                 {
                     label3.BorderBrush = Brushes.DarkRed;
+                    uitleg3.Content = "Juiste kleur, juiste positie";
                     correctTotalColor3 = 1;
                 }
                 else
                 {
                     label3.BorderBrush = Brushes.Wheat;
+                    uitleg3.Content = "Juiste kleur, foute positie";
                     score -= 1;
                     correctTotalColor3 = 0;
                 }
             }
             else
             {
+                uitleg3.Content = "foute kleur";
                 score -= 2;
                 correctTotalColor3 = 0;
             }
@@ -423,17 +434,20 @@ namespace Mastermind2_EmreKayaPXL
                 if (titleColors[3].Contains(label4Color))
                 {
                     label4.BorderBrush = Brushes.DarkRed;
+                    uitleg4.Content = "Juiste kleur, juiste positie";
                     correctTotalColor4 = 1;
                 }
                 else
                 {
                     label4.BorderBrush = Brushes.Wheat;
+                    uitleg4.Content = "Juiste kleur, foute positie";
                     score -= 1;
                     correctTotalColor4 = 0;
                 }
             }
             else
             {
+                uitleg4.Content = "foute kleur";
                 score -= 2;
                 correctTotalColor4 = 0;
             }
@@ -465,7 +479,6 @@ namespace Mastermind2_EmreKayaPXL
             clicked = DateTime.Now;
             scoreTextBlock.Text = $" Score = 100/100";
         }
-
 
         private void Window_Keydown(object sender, KeyEventArgs e)
         {
@@ -514,7 +527,6 @@ namespace Mastermind2_EmreKayaPXL
             timer.Start();
         }
 
-
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (sliderInformationLabel != null)
@@ -552,10 +564,11 @@ namespace Mastermind2_EmreKayaPXL
         {
             if (score > 25)
             {
-            score -= 25;
-            scoreTextBlock.Text = $" Score = {score}/100";
-            label1.BorderBrush = Brushes.DarkRed;
-            MessageBox.Show($"Eerste kleur is {titleColors[0]}");
+                score -= 25;
+                scoreTextBlock.Text = $" Score = {score}/100";
+                label1.BorderBrush = Brushes.DarkRed;
+                uitleg1.Content = "Juiste kleur, juiste positie";
+                MessageBox.Show($"Eerste kleur is {titleColors[0]}");
             }
             else MessageBox.Show("Je hebt geen score meer.");
             scoreTextBlock.Text = $" Score = {score}/100";
@@ -564,10 +577,11 @@ namespace Mastermind2_EmreKayaPXL
         {
             if (score > 25)
             {
-            score -= 25;
-            scoreTextBlock.Text = $" Score = {score}/100";
-            label2.BorderBrush = Brushes.DarkRed;
-            MessageBox.Show($"Tweede kleur is {titleColors[1]}");
+                score -= 25;
+                scoreTextBlock.Text = $" Score = {score}/100";
+                label2.BorderBrush = Brushes.DarkRed;
+                uitleg2.Content = "Juiste kleur, juiste positie";
+                MessageBox.Show($"Tweede kleur is {titleColors[1]}");
             }
             else MessageBox.Show("Je hebt geen score meer.");
             scoreTextBlock.Text = $" Score = {score}/100";
@@ -576,10 +590,11 @@ namespace Mastermind2_EmreKayaPXL
         {
             if (score > 25)
             {
-            score -= 25;
-            scoreTextBlock.Text = $" Score = {score}/100";
-            label3.BorderBrush = Brushes.DarkRed;
-            MessageBox.Show($"Derde kleur is {titleColors[2]}");
+                score -= 25;
+                scoreTextBlock.Text = $" Score = {score}/100";
+                label3.BorderBrush = Brushes.DarkRed;
+                uitleg4.Content = "Juiste kleur, juiste positie";
+                MessageBox.Show($"Derde kleur is {titleColors[2]}");
             }
             else MessageBox.Show("Je hebt geen score meer.");
         }
@@ -590,6 +605,7 @@ namespace Mastermind2_EmreKayaPXL
                 score -= 25;
                 scoreTextBlock.Text = $" Score = {score}/100";
                 label4.BorderBrush = Brushes.DarkRed;
+                uitleg4.Content = "Juiste kleur, juiste positie";
                 MessageBox.Show($"Vierde kleur is {titleColors[3]}");
             }
             else MessageBox.Show("Je hebt geen score meer.");
