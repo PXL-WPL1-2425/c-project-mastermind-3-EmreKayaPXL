@@ -35,6 +35,9 @@ namespace Mastermind2_EmreKayaPXL
         private string[] highscore = new string[15];
         string antwoord;
         private static List<string> namen = new List<string>();
+        private static List<string> highscoreAttempts = new List<string>{"", "", "", "", ""} ;
+        private static List<string> highscoreScore = new List<string> { "", "", "", "", "" };
+        string highscoreTekst;
         private static int naamIndex = 0;
         StringBuilder randomColorBuilder;
         string label1Color;
@@ -59,7 +62,15 @@ namespace Mastermind2_EmreKayaPXL
 
         private void DeVolgendeNaam()
         {
-            naamIndex++;
+            if (naamIndex < (namen.Count - 1))
+            {
+                naamIndex++;
+            }else
+            {
+                naamIndex = 0; 
+            }
+                naamLabel.Content = "Naam speler:   " + namen[naamIndex];
+
         }
 
         private void StartGame()
@@ -67,7 +78,7 @@ namespace Mastermind2_EmreKayaPXL
 
             do
             {
-                antwoord = Interaction.InputBox("Geef je naam in", "Naam", "Naam");
+                antwoord = Interaction.InputBox("Geef je naam in", "Maximum 5 spelers", "Naam");
 
                 while (string.IsNullOrEmpty(antwoord))
                 {
@@ -81,20 +92,27 @@ namespace Mastermind2_EmreKayaPXL
 
 
         }
+            StringBuilder stringBuilder = new StringBuilder();
 
-        private void HighScore()
+        private string HighScore()
         {
-            highscore[0] = ($"{namen[naamIndex]} - {attempts}pogingen - {score}/100");
+            //highscore[0] = ($"{namen[naamIndex]} - {attempts}pogingen - {score}/100");
+            stringBuilder.Clear();
+            
+            for (int i = 0; i < namen.Count; i++)
+            {
+                stringBuilder.AppendLine($"{namen[i]} - {highscoreAttempts[i]}pogingen - {highscoreScore[i]}/100");
+            }
+            return stringBuilder.ToString();
+        }
+        private void Highscores_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(HighScore());
         }
 
         private void Afsluiten_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-        }
-        private void Highscores_Click(object sender, RoutedEventArgs e)
-        {
-            HighScore();
-            MessageBox.Show($"{highscore[0]}");
         }
 
         private void HistoryColorsAttempts()
@@ -137,9 +155,22 @@ namespace Mastermind2_EmreKayaPXL
             {
                         ToggleDebug();
                         StopCountdown();
-                        messageBoxResult = MessageBox.Show($"U heeft verloren! \n{randomColorsTextBox.Text} \nScore: {score}/100\nAantal pogingen: {attempts} \nNu is speler {namen[naamIndex + 1]} aan de beurt ", namen[naamIndex]);
+
+                if (naamIndex < (namen.Count -1))
+                {
+                    messageBoxResult = MessageBox.Show($"U heeft verloren! \n{randomColorsTextBox.Text} \nScore: {score}/100\nAantal pogingen: {attempts} \nNu is speler {namen[naamIndex + 1]} aan de beurt ", namen[naamIndex]);
+                }
+                else
+                {
+                    messageBoxResult = MessageBox.Show($"U heeft verloren! \n{randomColorsTextBox.Text} \nScore: {score}/100\nAantal pogingen: {attempts} \nNu is speler {namen[0]} aan de beurt ", namen[naamIndex]);
+                }
+
+
+                        
+                highscoreAttempts[naamIndex] = $"{attempts}";
+                highscoreScore[naamIndex] = $"{score}";
                         DeVolgendeNaam();
-                        sliderInformationLabel.Visibility = Visibility.Visible;
+                sliderInformationLabel.Visibility = Visibility.Visible;
                         maxPogingSlider.Visibility = Visibility.Visible;
                         score = 100;
                         ToggleDebug();
@@ -228,8 +259,22 @@ namespace Mastermind2_EmreKayaPXL
                 attempts--;
                 UpdateTitle();
                 ToggleDebug();
-                messageBoxResult = MessageBox.Show($"U heeft gewonnen!\nScore: {score}/100\nAantal pogingen {attempts} \nNu is speler {namen[naamIndex + 1]} aan de beurt", namen[naamIndex]);
-                DeVolgendeNaam(); 
+
+
+
+                if (naamIndex < (namen.Count -1))
+                {
+                    messageBoxResult = MessageBox.Show($"U heeft gewonnen!\nScore: {score}/100\nAantal pogingen {attempts} \nNu is speler {namen[naamIndex + 1]} aan de beurt", namen[naamIndex]);
+                }
+                else
+                {
+                    messageBoxResult = MessageBox.Show($"U heeft gewonnen!\nScore: {score}/100\nAantal pogingen {attempts} \nNu is speler {namen[0]} aan de beurt", namen[naamIndex]);
+                }
+
+
+                highscoreAttempts[naamIndex] = $"{attempts}";
+                highscoreScore[naamIndex] = $"{score}";
+                DeVolgendeNaam();
                 sliderInformationLabel.Visibility = Visibility.Visible;
                 maxPogingSlider.Visibility = Visibility.Visible;
                 score = 100;
@@ -240,7 +285,7 @@ namespace Mastermind2_EmreKayaPXL
                 titleRandomColors();
                 return;
             }
-            else if (elapsedTime.Seconds >= 1000)
+            else if (elapsedTime.Seconds >= 20)
             {
                 timer.Stop();
                 MessageBox.Show("Te laat 10 seconden zijn voorbij, er wordt 1 poging toegevoegd");
