@@ -285,7 +285,7 @@ namespace Mastermind2_EmreKayaPXL
                 titleRandomColors();
                 return;
             }
-            else if (elapsedTime.Seconds >= 20)
+            else if (elapsedTime.Seconds >= 10)
             {
                 timer.Stop();
                 MessageBox.Show("Te laat 10 seconden zijn voorbij, er wordt 1 poging toegevoegd");
